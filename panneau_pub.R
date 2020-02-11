@@ -4,7 +4,7 @@
 # dl le 11/02/2020
 
 
-### 1 chargement des packages ================
+### 1 Chargement des packages ================
 
 library(sp) #  veux package spatiaux R
 library(sf) # simple feature for R
@@ -12,9 +12,12 @@ library(dplyr) # analyse de données tidyverse
 library(ggplot2) # graph rapide
 library(stringr) # modif texte 
 
-#### 2 chargement du geojson =============
+#### 2 Chargement du geojson =============
 
 panneau_pub <- st_read("data/pvo_patrimoine_voirie.pvomobilierurbain.shp")
+
+
+#### 3 Analyse rapide =============
 
 
 #verif du jeux de données et de sa structure
@@ -52,5 +55,19 @@ ggplot( aes(x = reorder(famillemob, -nombre), y = nombre,  fill = famillemob)) +
         axis.ticks.x=element_blank())
 
 
+#### 4 Export =============
 
+#nb va poser pb avec mon NA sur le code_insee
 
+outlist <- list() # initialisation d'un liste
+longueur <- length(unique(panneau_pub$code_insee)) # le nombre de fichier souhaité
+
+for(i in 1:longueur) { 
+  # on passe par une liste, c'est pas indispensable mais je voulais verifier un peu avant d'ecrire des fichier
+  outlist[[i]] <- panneau_pub %>%
+    filter(code_insee == unique(panneau_pub$code_insee)[i]) 
+  # on écrit des tas de fichiers 
+  st_write(outlist[[i]], dsn = paste0(unique(panneau_pub$code_insee)[i], ".geojson"))
+}
+
+rm(longueur, outlist)
