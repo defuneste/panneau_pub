@@ -40,8 +40,12 @@ panneau_pub[is.na(panneau_pub$commune),]
 
 # famillemob semble être le plus interessant 
 
-ggplot(panneau_pub, aes(x = famillemob, fill = famillemob)) +
-  geom_bar() +
+panneau_pub %>%
+  st_drop_geometry() %>% 
+  group_by(famillemob) %>% 
+  summarize(nombre = n()) %>% 
+ggplot( aes(x = reorder(famillemob, -nombre), y = nombre,  fill = famillemob)) +
+  geom_bar(stat = "identity") +
   labs(x = "") +
   theme(axis.title.x=element_blank(),
         axis.text.x=element_blank(),
