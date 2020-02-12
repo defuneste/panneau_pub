@@ -27,7 +27,7 @@ str(panneau_pub)
 # le fichier comporte 2718 points avec 8 variables
 
 # identifian doit correspondre à l'identifiant de chaque objet dans la base "metier"
-# a moins que cela ne soit gid ?
+# a moins que cela ne soit gid ? verifier car pour les arbres c'était gid
 
 # nom_abri il y 635 valeurs manquante à voir si cela correspond à quelque chose
 
@@ -54,8 +54,13 @@ ggplot( aes(x = reorder(famillemob, -nombre), y = nombre,  fill = famillemob)) +
         axis.text.x=element_blank(),
         axis.ticks.x=element_blank())
 
+#### 4 Renomage et renforcement des données ============
 
-#### 4 Export =============
+panneau_pub <- panneau_pub %>%
+                  mutate("source:name" = "Mobilier urbain de la Métropole de Lyon",
+                         "source:addr" = "https://data.grandlyon.com/jeux-de-donnees/mobilier-urbain-metropole-lyon/ressources")
+  
+#### 5 Export =============
 
 #nb va poser pb avec mon NA sur le code_insee
 
